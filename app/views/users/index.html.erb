@@ -1,0 +1,7 @@
+<h1>Currently <%= pluralize(@users.count, 'User') %> Registered</h1>
+
+<% @users.each do |user| %>
+  <h3><%= link_to user.username, user %></h3>
+<% end %>
+
+<%= link_to "Back to Home", "/" %>

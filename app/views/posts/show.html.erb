@@ -1,1 +1,48 @@
+<h1>Title: <%= @post.title %></h1>
 
+<h3>Content:</h3>
+<p><%= @post.content %></p>
+
+<h3>Category: </h3>
+<ul>
+<% @post.categories.each do |category| %>
+  <li><%= link_to category.name, category %></li>
+<% end %>
+</ul>
+
+<h3>Comments:</h3>
+
+<%= form_for(@comment) do |f| %>
+  <%= f.text_field :content, placeholder: "your comment here" %>
+  <%= f.collection_select :user_id, User.all, :id, :username, include_blank: true %>
+
+  <%= f.fields_for :user, @user do |cf| %>
+    <%= cf.text_field :username, list: "username", placeholder: "username" %>
+    <datalist id="username">
+      <% User.all.each do |user| %>
+        <option value="<%= user.username %>"></option>
+      <% end %>
+    </datalist>
+  <% end %>
+
+  <%= f.hidden_field :post_id, value: @post.id %>
+  <%= f.submit "Create Comment" %>
+<% end %>
+
+<%#= render partial: "comments/new" %>
+
+<ul>
+  <% @post.comments.each do |comment| %>
+    <li><%= comment.user.username %> says: <%= comment.content %></li>
+  <% end %>
+</ul>
+
+<h4>Commenting Users: 
+  
+  <% @post.users.uniq.each.with_index do |user, i| %>
+    <span><%= link_to user.username, user %><%= ", " if i < @post.users.uniq.count - 1 %></span>
+  <% end %>
+  
+</h4>
+
+<%= link_to "Back to List", posts_path %>

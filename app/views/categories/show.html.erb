@@ -1,0 +1,9 @@
+<h1><%= @category.name %></h1>
+
+<% @category.posts.each do |post| %>
+  <p><%= link_to post.title, post %></p>
+<% end %>
+
+<p>
+<%= link_to "Back to List", categories_path %>
+</p>
